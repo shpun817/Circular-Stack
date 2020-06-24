@@ -77,22 +77,21 @@ public class CircularStack<T> {
 
 }
 
-namespace HelloWorld
+/* FOR TESTING
+class Program
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            CircularStack<int> cs = new CircularStack<int>(5);
-            cs.Push(2);
-            cs.Push(1);
-            cs.Push(3);
-            cs.Push(4);
-            cs.Push(11);
-			cs.Resize(3);
-			cs.Resize(4);
-			Console.WriteLine(cs.Peek());
-            Console.WriteLine(cs);
-        }
-    }
+	static void Main(string[] args)
+	{
+		CircularStack<int> cs = new CircularStack<int>(5);
+		cs.Push(2);
+		cs.Push(1);
+		cs.Push(3);
+		cs.Push(4);
+		cs.Push(11);
+		cs.Resize(3);
+		cs.Resize(4);
+		Console.WriteLine(cs.Peek());
+		Console.WriteLine(cs);
+	}
 }
+*/
