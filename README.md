@@ -22,7 +22,7 @@ Feel free to take the code. Feel free to share what you think about my code (goo
   // Change the max size of the CircularStack, getting rid of elements that cannot be stored with the new size\
   // You can view it as keep popping elements out until the new stack can store the old stack\
   // Throws OverflowException when maxSize <= 0\
-  **_void Resize(int newSize)_**\ 
+  **_void Resize(int newSize)_**
 ### Accessor:
   // Get the element at the top without popping it out of the stack\
   **_T Peek();_**
