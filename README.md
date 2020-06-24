@@ -9,7 +9,7 @@ Feel free to take the code. Feel free to share what you think about my code (goo
 ### Constructor:
   // Create a CircularStack with given max size, initialize it to be an empty stack ready to store objects of type T\
   // Throws OverflowException when maxSize <= 0\
-  **_CircularStack<T>(int maxSize);_**\
+  **_CircularStack\<T>(int maxSize);_**
                                   
   
 ### Mutators:
