@@ -12,6 +12,9 @@ public class CircularStack<T> {
         if (maxSize <= 0)
             throw new OverflowException("Size of CircularStack not positive.");
         _arr = new T[maxSize];
+		for (int i = 0; i < maxSize; ++i) {
+			_arr[i] = default(T);
+		}
         _size = _top = _bottom = 0;
         _maxSize = maxSize;
     }
@@ -25,29 +28,24 @@ public class CircularStack<T> {
             ++_size;
             return;
         }
-        int dummyTop = _top;
-        ++dummyTop;
-        dummyTop %= _maxSize;
-        if (dummyTop == _bottom) {
-            ++_bottom;
-            _bottom %= _maxSize;
-        }
-        _top = dummyTop;
+        _top = (_top+1) % _maxSize;
+        if (_top == _bottom) {
+            _bottom = (_bottom+1) % _maxSize;
+        } else {
+			++_size;
+		}
         _arr[_top] = obj;
-        if (_size < _maxSize)
-            ++_size;
     }
 
 	public T Peek() {
-		if (_size == 0) return default(T);
+		if (_size <= 0) return default(T);
 		return _arr[_top];
 	}
 
     public T Pop() {
-        if (_size == 0) return default(T);
+        if (_size <= 0) return default(T);
         T obj = _arr[_top];
-        --_top;
-        _top %= _maxSize;
+		_top = (_top-1) % _maxSize;
         --_size;
         return obj;
     }
@@ -66,6 +64,13 @@ public class CircularStack<T> {
 		_top = _size-1;
 		_maxSize = newSize;
     }
+
+	public void Clear() {
+		for (int i = 0; i < _maxSize; ++i) {
+			_arr[i] = default(T);
+		}
+        _size = _top = _bottom = 0;
+	}
 
     public override String ToString() {
         String str = "";
