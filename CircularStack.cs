@@ -4,9 +4,9 @@ public class CircularStack<T> {
 
     private T[] _arr;
     private int _maxSize; // This is fixed
-    private int _size;
     private int _top;
     private int _bottom;
+	private bool _isEmpty;
 
     public CircularStack (int maxSize) {
         if (maxSize <= 0)
@@ -15,53 +15,73 @@ public class CircularStack<T> {
 		for (int i = 0; i < maxSize; ++i) {
 			_arr[i] = default(T);
 		}
-        _size = _top = _bottom = 0;
+        _top = _bottom = 0;
         _maxSize = maxSize;
+		_isEmpty = true;
     }
 
-    public int GetSize() { return _size; }
+    public int GetSize() {
+		if (_top > _bottom) {
+			return (_top - _bottom + 1);
+		} else if (_top < _bottom) {
+			return (_maxSize - _bottom + _top + 1);
+		} else if (_isEmpty) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
     public int GetMaxSize() { return _maxSize; }
 
     public void Push(T obj) {
-        if (_size == 0) {
-            _arr[_top] = obj;
-            ++_size;
-            return;
-        }
-        _top = (_top+1) % _maxSize;
-        if (_top == _bottom) {
-            _bottom = (_bottom+1) % _maxSize;
-        } else {
-			++_size;
+        if (_isEmpty) {
+			_isEmpty = false;
+			_top = _bottom = 0; // Reset to play safe
+		} else {
+			_top = (_top + 1) % _maxSize;
+			if (_bottom == _top) {
+				_bottom = (_bottom + 1) % _maxSize;
+			}
 		}
-        _arr[_top] = obj;
+		_arr[_top] = obj;
     }
 
 	public T Peek() {
-		if (_size <= 0) return default(T);
+		if (_isEmpty) {
+			return default(T);
+		}
 		return _arr[_top];
 	}
 
     public T Pop() {
-        if (_size <= 0) return default(T);
-        T obj = _arr[_top];
-		_top = (_top-1) % _maxSize;
-        --_size;
-        return obj;
+        if (_isEmpty) {
+			return default(T);
+		} else {
+			T obj = _arr[_top];
+			if (_top == _bottom) {
+				_isEmpty = true;
+			} else {
+				if (_top == 0) {
+					_top = _maxSize;
+				}
+				--_top;
+			}
+			return obj;
+		}
     }
 
     public void Resize(int newSize) {
         if (newSize <= 0)
 			throw new OverflowException("Size of CircularStack not positive.");
         T[] tempArr = new T[newSize];
-		int tempSize = newSize<_size?newSize:_size;
+		int currentSize = GetSize();
+		int tempSize = newSize<currentSize?newSize:currentSize;
 		for (int i = 0; i < tempSize; ++i) {
 			tempArr[i] = _arr[(_bottom+i)%_maxSize];
 		}
 		_arr = tempArr;
-		_size = tempSize;
 		_bottom = 0;
-		_top = _size-1;
+		_top = newSize<currentSize?newSize-1:currentSize-1;
 		_maxSize = newSize;
     }
 
@@ -69,12 +89,14 @@ public class CircularStack<T> {
 		for (int i = 0; i < _maxSize; ++i) {
 			_arr[i] = default(T);
 		}
-        _size = _top = _bottom = 0;
+       _top = _bottom = 0;
+	   _isEmpty = true;
 	}
 
     public override String ToString() {
         String str = "";
-        for (int i = 0; i < _size; ++i) {
+		int size = GetSize();
+        for (int i = 0; i < size; ++i) {
             str += _arr[(_bottom+i)%_maxSize] + " ";
         }
         return str.TrimEnd();
